@@ -1,0 +1,38 @@
+---
+description: Python 依赖统一安装到项目 .venv 虚拟环境
+alwaysApply: true
+---
+
+# Python 虚拟环境规范
+
+本项目使用 `d:\ai_script\.venv` 作为唯一 Python 虚拟环境。
+
+## 安装依赖
+
+- **必须**使用 `.venv` 中的 Python 和 pip，不要使用系统 Python（如 `D:/python3.11/python.exe`）
+- 安装命令格式：
+
+```powershell
+d:/ai_script/.venv/Scripts/python.exe -m pip install -r requirements.txt
+```
+
+- 安装单个包：
+
+```powershell
+d:/ai_script/.venv/Scripts/python.exe -m pip install 包名
+```
+
+## 运行脚本
+
+- 优先使用 `.venv` 解释器运行 Python 脚本
+- 或在激活虚拟环境后运行：
+
+```powershell
+.venv\Scripts\Activate.ps1
+python 脚本路径
+```
+
+## 注意
+
+- 系统 Python 与 `.venv` 的包目录相互独立，装在一处不会影响另一处
+- 运行脚本和安装依赖必须使用同一个解释器
