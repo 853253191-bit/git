@@ -1,2 +1,12 @@
 .env
 .venv/
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Jupyter 缓存
+.ipynb_checkpoints/
