@@ -12,6 +12,11 @@ DASHSCOPE_API_KEY = os.getenv('DASHSCOPE_API_KEY')
 if not DASHSCOPE_API_KEY:
     raise ValueError("请设置环境变量 DASHSCOPE_API_KEY")
 
+# 脚本所在目录，保证从任意工作目录运行都能找到同目录下的资源文件
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PDF_PATH = os.path.join(BASE_DIR, '浦发上海浦东发展银行西安分行个金客户经理考核办法.pdf')
+VECTOR_DB_DIR = os.path.join(BASE_DIR, 'vector_db')
+
 def extract_text_with_page_numbers(pdf) -> Tuple[str, List[int]]:
     """
     从PDF中提取文本并记录每行文本对应的页码
@@ -158,7 +163,7 @@ def load_knowledge_base(load_path: str, embeddings = None) -> FAISS:
     return knowledgeBase
 
 # 读取PDF文件
-pdf_reader = PdfReader('./浦发上海浦东发展银行西安分行个金客户经理考核办法.pdf')
+pdf_reader = PdfReader(PDF_PATH)
 # 提取文本和页码信息
 text, page_numbers = extract_text_with_page_numbers(pdf_reader)
 text
@@ -167,7 +172,7 @@ text
 print(f"提取的文本长度: {len(text)} 个字符。")
     
 # 处理文本并创建知识库，同时保存到磁盘
-save_dir = "./vector_db"
+save_dir = VECTOR_DB_DIR
 knowledgeBase = process_text_with_splitter(text, page_numbers, save_path=save_dir)
 
 # 示例：如何加载已保存的向量数据库
@@ -179,12 +184,12 @@ embeddings = DashScopeEmbeddings(
     dashscope_api_key=DASHSCOPE_API_KEY,
 )
 # 从磁盘加载向量数据库
-loaded_knowledgeBase = load_knowledge_base("./vector_db", embeddings)
+loaded_knowledgeBase = load_knowledge_base(VECTOR_DB_DIR, embeddings)
 # 使用加载的知识库进行查询
 docs = loaded_knowledgeBase.similarity_search("客户经理每年评聘申报时间是怎样的？")
 
 # 直接使用FAISS.load_local方法加载（替代方法）
-# loaded_knowledgeBase = FAISS.load_local("./vector_db", embeddings, allow_dangerous_deserialization=True)
+# loaded_knowledgeBase = FAISS.load_local(VECTOR_DB_DIR, embeddings, allow_dangerous_deserialization=True)
 # 注意：使用这种方法加载时，需要手动加载页码信息
 """
 

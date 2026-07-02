@@ -10,3 +10,6 @@ __pycache__/
 
 # Jupyter 缓存
 .ipynb_checkpoints/
+
+# 运行生成的向量库
+vector_db/

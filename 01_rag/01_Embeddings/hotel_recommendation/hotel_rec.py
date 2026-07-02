@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.feature_extraction.text import CountVectorizer
@@ -5,9 +6,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import re
 pd.options.display.max_columns = 30
 import matplotlib.pyplot as plt
+
+# 脚本所在目录，保证从任意工作目录运行都能找到同目录下的资源文件
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CSV_PATH = os.path.join(BASE_DIR, 'Seattle_Hotels.csv')
+
 # 支持中文
 plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
-df = pd.read_csv('Seattle_Hotels.csv', encoding="latin-1")
+df = pd.read_csv(CSV_PATH, encoding="latin-1")
 # 数据探索
 print(df.head())
 print('数据集中的酒店个数：', len(df))
